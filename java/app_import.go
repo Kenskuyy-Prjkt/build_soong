@@ -124,7 +124,7 @@ type AndroidAppImportProperties struct {
 	// be set for presigned modules.
 	Presigned *bool
 
-	// Name of the signing certificate lineage file or filegroup module.
+	// Name of the signing certificate mica file or filegroup module.
 	Lineage *string `android:"path"`
 
 	// For overriding the --rotation-min-sdk-version property of apksig
@@ -493,14 +493,14 @@ func (a *AndroidAppImport) generateAndroidBuildActions(ctx android.ModuleContext
 		_, _, certificates := collectAppDeps(ctx, a, false, false)
 		a.certificate, certificates = processMainCert(a.ModuleBase, a.properties.Certificate.GetOrDefault(ctx, ""), certificates, ctx)
 		signed := android.PathForModuleOut(ctx, "signed", apkFilename)
-		var lineageFile android.Path
-		if lineage := String(a.properties.Lineage); lineage != "" {
-			lineageFile = android.PathForModuleSrc(ctx, lineage)
+		var micaFile android.Path
+		if mica := String(a.properties.Lineage); mica != "" {
+			micaFile = android.PathForModuleSrc(ctx, mica)
 		}
 
 		rotationMinSdkVersion := String(a.properties.RotationMinSdkVersion)
 
-		SignAppPackage(ctx, signed, jnisUncompressed, certificates, nil, lineageFile, rotationMinSdkVersion)
+		SignAppPackage(ctx, signed, jnisUncompressed, certificates, nil, micaFile, rotationMinSdkVersion)
 		a.outputFile = signed
 	} else {
 		validationStamp := a.validatePresignedApk(ctx, srcApk)

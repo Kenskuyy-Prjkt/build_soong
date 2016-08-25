@@ -171,7 +171,7 @@ func TestAndroidAppImport_SigningLineage(t *testing.T) {
 			apk: "prebuilts/apk/app.apk",
 			certificate: "platform",
 			additional_certificates: [":additional_certificate"],
-			lineage: "lineage.bin",
+			mica: "mica.bin",
 			rotationMinSdkVersion: "32",
 		}
 
@@ -195,7 +195,7 @@ func TestAndroidAppImport_SigningLineage(t *testing.T) {
 
 	// Check cert signing flags.
 	actualCertSigningFlags := signedApk.Args["flags"]
-	expectedCertSigningFlags := "--lineage lineage.bin --rotation-min-sdk-version 32"
+	expectedCertSigningFlags := "--mica mica.bin --rotation-min-sdk-version 32"
 	if expectedCertSigningFlags != actualCertSigningFlags {
 		t.Errorf("Incorrect signing flags, expected: %q, got: %q", expectedCertSigningFlags, actualCertSigningFlags)
 	}
@@ -214,21 +214,21 @@ func TestAndroidAppImport_SigningLineageFilegroup(t *testing.T) {
 			name: "foo",
 			apk: "prebuilts/apk/app.apk",
 			certificate: "platform",
-			lineage: ":lineage_bin",
+			mica: ":mica_bin",
 		}
 
 		filegroup {
-			name: "lineage_bin",
-			srcs: ["lineage.bin"],
+			name: "mica_bin",
+			srcs: ["mica.bin"],
 		}
 	`)
 
 	variant := ctx.ModuleForTests(t, "foo", "android_common")
 
 	signedApk := variant.Output("signed/foo.apk")
-	// Check cert signing lineage flag.
+	// Check cert signing mica flag.
 	signingFlag := signedApk.Args["flags"]
-	expected := "--lineage lineage.bin"
+	expected := "--mica mica.bin"
 	if expected != signingFlag {
 		t.Errorf("Incorrect signing flags, expected: %q, got: %q", expected, signingFlag)
 	}

@@ -2393,7 +2393,7 @@ func TestCertificates(t *testing.T) {
 					name: "foo",
 					srcs: ["a.java"],
 					certificate: ":new_certificate",
-					lineage: "lineage.bin",
+					mica: "mica.bin",
 					rotationMinSdkVersion: "32",
 					sdk_version: "current",
 				}
@@ -2404,7 +2404,7 @@ func TestCertificates(t *testing.T) {
 				}
 			`,
 			certificateOverride:      "",
-			expectedCertSigningFlags: "--lineage lineage.bin --rotation-min-sdk-version 32",
+			expectedCertSigningFlags: "--mica mica.bin --rotation-min-sdk-version 32",
 			expectedCertificate:      "cert/new_cert",
 		},
 		{
@@ -2414,7 +2414,7 @@ func TestCertificates(t *testing.T) {
 					name: "foo",
 					srcs: ["a.java"],
 					certificate: ":new_certificate",
-					lineage: ":lineage_bin",
+					mica: ":mica_bin",
 					rotationMinSdkVersion: "32",
 					sdk_version: "current",
 				}
@@ -2425,12 +2425,12 @@ func TestCertificates(t *testing.T) {
 				}
 
 				filegroup {
-					name: "lineage_bin",
-					srcs: ["lineage.bin"],
+					name: "mica_bin",
+					srcs: ["mica.bin"],
 				}
 			`,
 			certificateOverride:      "",
-			expectedCertSigningFlags: "--lineage lineage.bin --rotation-min-sdk-version 32",
+			expectedCertSigningFlags: "--mica mica.bin --rotation-min-sdk-version 32",
 			expectedCertificate:      "cert/new_cert",
 		},
 		{
@@ -2682,7 +2682,7 @@ func TestOverrideAndroidApp(t *testing.T) {
 			name: "bar",
 			base: "foo",
 			certificate: ":new_certificate",
-			lineage: "lineage.bin",
+			mica: "mica.bin",
 			rotationMinSdkVersion: "32",
 			logging_parent: "bah",
 		}
@@ -2759,7 +2759,7 @@ func TestOverrideAndroidApp(t *testing.T) {
 			variantName:      "android_common_bar",
 			apkPath:          "out/target/product/test_device/system/app/bar/bar.apk",
 			certFlag:         "cert/new_cert.x509.pem cert/new_cert.pk8",
-			certSigningFlags: "--lineage lineage.bin --rotation-min-sdk-version 32",
+			certSigningFlags: "--mica mica.bin --rotation-min-sdk-version 32",
 			overrides:        []string{"qux", "foo"},
 			packageFlag:      "",
 			renameResources:  false,
